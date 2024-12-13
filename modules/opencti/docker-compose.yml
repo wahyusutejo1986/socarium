@@ -1,1 +1,16 @@
-Docker Compose file for OpenCTI.
+version: '3.9'
+
+services:
+  opencti:
+    image: opencti/platform
+    container_name: opencti
+    ports:
+      - "8082:8082"
+    environment:
+      - APP__ADMIN__EMAIL=admin@opencti.io
+      - APP__ADMIN__PASSWORD=admin
+    volumes:
+      - opencti-data:/data
+
+volumes:
+  opencti-data:

@@ -1,1 +1,18 @@
-Docker Compose file for MISP.
+version: '3.9'
+
+services:
+  misp:
+    image: circl/misp-dockerized-misp
+    container_name: misp
+    ports:
+      - "80:80"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: misp
+      MYSQL_USER: misp
+      MYSQL_PASSWORD: misp
+    volumes:
+      - misp-data:/var/www/MISP
+
+volumes:
+  misp-data:

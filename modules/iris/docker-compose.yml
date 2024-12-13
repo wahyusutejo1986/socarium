@@ -1,1 +1,16 @@
-Docker Compose file for DFIR IRIS.
+version: '3.9'
+
+services:
+  iris:
+    image: dfir-iris/iris
+    container_name: iris
+    ports:
+      - "8080:8080"  # Web interface
+    environment:
+      IRIS_ADMIN_USERNAME: iris_admin
+      IRIS_ADMIN_PASSWORD: iris_admin
+    volumes:
+      - iris-data:/data
+
+volumes:
+  iris-data:

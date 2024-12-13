@@ -1,1 +1,23 @@
-Docker Compose file for Wazuh.
+version: '3.9'
+
+services:
+  wazuh:
+    image: wazuh/wazuh
+    ports:
+      - "5601:5601"  # Kibana interface
+      - "1514:1514/udp"  # Log collection
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    volumes:
+      - wazuh-data:/var/ossec/data
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    environment:
+      discovery.type: single-node
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+
+volumes:
+  wazuh-data:
+  es-data:
