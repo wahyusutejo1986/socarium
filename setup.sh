@@ -1,0 +1,1 @@
+Finalized setup.sh script content.

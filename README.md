@@ -1,1 +1,1 @@
-# socarium
+Comprehensive README for Socarium repository.
