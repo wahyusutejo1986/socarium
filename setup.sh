@@ -87,8 +87,8 @@ check_requirements() {
     fi
 }
 
-# Function to handle directory conflicts
-handle_directory_conflicts() {
+# Check for Existing Directories and Handle User Confirmation
+check_and_remove_existing() {
     # Define the directories to check
     DIRECTORIES=(
         "/opt/socarium"
@@ -102,72 +102,63 @@ handle_directory_conflicts() {
     for DIR in "${DIRECTORIES[@]}"; do
         if [ -d "$DIR" ]; then
             echo "⚠️ Directory $DIR already exists."
-            while true; do
-                echo "Options for $DIR:"
-                echo "1. Use existing directory"
-                echo "2. Delete and create a new directory"
-                echo "3. Skip this directory"
-                echo "4. Exit setup"
-                read -p "Choose an option [1-4]: " conflict_choice
-
-                case "$conflict_choice" in
-                    1)
-                        echo "✅ Using existing directory: $DIR"
-                        break
-                        ;;
-                    2)
-                        echo "🗑 Deleting $DIR and creating a new one..."
-                        rm -rf "$DIR"
-                        mkdir -p "$DIR"
-                        echo "✅ New directory created: $DIR"
-                        break
-                        ;;
-                    3)
-                        echo "⏭ Skipping $DIR. No changes will be made."
-                        break
-                        ;;
-                    4)
-                        echo "❌ Exiting setup. No further changes will be made."
-                        exit 1
-                        ;;
-                    *)
-                        echo "Invalid input. Please choose 1, 2, 3, or 4."
-                        ;;
-                esac
-            done
-        else
-            echo "Directory $DIR does not exist. Creating it..."
-            mkdir -p "$DIR"
-            echo "✅ Created directory: $DIR"
+            read -p "Do you want to remove it and create a new one? (Y/N): " confirm
+            case "$confirm" in
+                [Yy]*)
+                    echo "🗑 Removing $DIR..."
+                    rm -rf "$DIR"
+                    echo "✅ $DIR removed."
+                    ;;
+                [Nn]*)
+                    echo "❌ Installation stopped by user."
+                    exit 1
+                    ;;
+                *)
+                    echo "Invalid input. Please type Y or N."
+                    exit 1
+                    ;;
+            esac
         fi
     done
 
-    echo "✅ Directory conflict resolution completed."
+    # Ensure base directory exists
+    mkdir -p /opt/socarium
+    echo "✅ All directories are ready for installation."
 }
 
-# Main Menu
+# Dynamically load all platform-specific installation scripts
+for module in $BASE_DIR/*/*.sh; do
+    source "$module"
+done
+
+# Display Welcome Banner
+welcome_banner
+
+# Check System Requirements
+check_requirements
+
+# Check for Existing Directories
+check_and_remove_existing
+
+# Menu-driven selection
 while true; do
     echo "================================="
     echo "SOC Tools Installation Menu"
     echo "================================="
-    echo "1. Handle Directory Conflicts"
-    echo "2. Check Requirements"
-    echo "3. Install Prerequisites"
-    echo "4. Install All (Automated, Excluding YARA)"
-    echo "5. Install Wazuh"
-    echo "6. Install OpenCTI"
-    echo "7. Install MISP"
-    echo "8. Install DFIR IRIS"
-    echo "9. Install Shuffle (Last)"
-    echo "10. YARA Manual Step (Instructions)"
-    echo "11. Exit"
+    echo "1. Install Prerequisites"
+    echo "2. Install All (Automated, Excluding YARA)"
+    echo "3. Install Wazuh"
+    echo "4. Install OpenCTI"
+    echo "5. Install MISP"
+    echo "6. Install DFIR IRIS"
+    echo "7. Install Shuffle (Last)"
+    echo "8. YARA Manual Step (Instructions)"
+    echo "9. Exit"
     echo "================================="
-    read -p "Choose an option [1-11]: " choice
+    read -p "Choose an option [1-9]: " choice
     case $choice in
-        1) handle_directory_conflicts ;;
-        2) check_requirements ;;
-        3) install_prerequisites ;;
-        4)
+        1) install_prerequisites ;;
+        2)
             echo "🚀 Installing all components in the correct order..."
             install_prerequisites
             install_wazuh
@@ -177,13 +168,13 @@ while true; do
             install_shuffle
             echo "✅ All components installed successfully!"
             ;;
-        5) install_wazuh ;;
-        6) install_opencti ;;
-        7) install_misp ;;
-        8) install_dfir_iris ;;
-        9) install_shuffle ;;
-        10) install_yara_manual ;;
-        11) echo "Exiting..."; break ;;
+        3) install_wazuh ;;
+        4) install_opencti ;;
+        5) install_misp ;;
+        6) install_dfir_iris ;;
+        7) install_shuffle ;;
+        8) install_yara_manual ;;
+        9) echo "Exiting..."; break ;;
         *) echo "Invalid option, please choose again." ;;
     esac
 done
