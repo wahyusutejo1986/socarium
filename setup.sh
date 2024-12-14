@@ -61,7 +61,7 @@ check_requirements() {
     fi
 
     # Check required packages
-    REQUIRED_PACKAGES=("docker" "docker-compose" "git" "curl" "wget" "build-essential" "python3-pip")
+    REQUIRED_PACKAGES=("docker" "docker-compose" "git" "curl" "wget")
     for package in "${REQUIRED_PACKAGES[@]}"; do
         if command -v $package &> /dev/null; then
             checklist+="[✔] $package: Installed\n"
