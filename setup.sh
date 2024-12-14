@@ -90,8 +90,7 @@ check_requirements() {
 # Check for Existing Directories and Handle User Confirmation
 check_and_remove_existing() {
     # Define the directories to check
-    DIRECTORIES=(
-        "/opt/socarium"
+    DIRECTORIES=(        
         "/opt/socarium/iris_web"
         "/opt/socarium/misp"
         "/opt/socarium/wazuh-docker"
