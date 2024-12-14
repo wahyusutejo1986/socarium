@@ -30,8 +30,8 @@ welcome_banner() {
 # Cleanup Function
 cleanup() {
     echo "🧹 Cleaning up incomplete installations..."
-    docker-compose down || true
-    rm -rf "$BASE_DIR"/*
+    sudo docker-compose down || true
+    sudo rm -rf "$BASE_DIR"/*
     echo "Cleanup completed."
 }
 
