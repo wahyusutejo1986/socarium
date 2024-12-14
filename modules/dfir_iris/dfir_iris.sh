@@ -2,7 +2,7 @@
 
 install_dfir_iris() {
     echo "🚀 Installing DFIR IRIS..."
-    local BASE_DIR="/opt/security-suite"
+    local BASE_DIR="/opt/socarium"
     local DFIR_REPO="https://github.com/dfir-iris/iris-web.git"
     git clone $DFIR_REPO $BASE_DIR/iris-web || error_handler "Cloning DFIR IRIS Repository"
     cd $BASE_DIR/iris-web
