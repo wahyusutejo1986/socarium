@@ -1,1 +1,0 @@
-Python script for ransomware simulation.

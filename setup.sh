@@ -5,7 +5,6 @@ trap cleanup ERR  # Trap errors and perform cleanup.
 
 # Base setup
 BASE_DIR="modules"
-
 LOG_FILE="/var/log/socarium_setup.log"
 exec > >(tee -a "$LOG_FILE") 2>&1  # Redirect output to log file.
 
@@ -17,6 +16,10 @@ welcome_banner() {
     echo "Socarium is a modular SOC management package designed for     "
     echo "simplified deployment, management, and testing of SOC tools. "
     echo "This package includes: Wazuh, IRIS, Shuffle, MISP, and OpenCTI."
+    echo "---------------------------------------------------------------"
+    echo "Recommended OS: Ubuntu Server 22.04 LTS                      "
+    echo "This package has been tested and verified to work optimally   "
+    echo "on Ubuntu Server 22.04 LTS.                                  "
     echo "---------------------------------------------------------------"
     echo "Author:                                                       "
     echo "This SOC package was created through a collaboration between  "
@@ -35,149 +38,145 @@ cleanup() {
 # Check Requirements
 check_requirements() {
     echo "🛠 Checking system requirements..."
+    local requirements_met=true
+    local checklist=""
+
+    # OS Check
+    os_version=$(lsb_release -d | awk -F'\t' '{print $2}')
+    if [[ "$os_version" != *"Ubuntu 22.04"* ]]; then
+        checklist+="[✘] OS: Not Ubuntu 22.04 LTS (Detected: $os_version)\n"
+        echo "⚠️ Socarium has not been tested on $os_version. Proceeding with caution."
+    else
+        checklist+="[✔] OS: Ubuntu 22.04 LTS (Detected: $os_version)\n"
+    fi
+
+    # Check memory requirements
     total_memory=$(free -m | awk '/^Mem:/{print $2}')
-    if [ "$total_memory" -lt 16000 ]; then
-        echo "❌ At least 16GB RAM is recommended for this setup."
+    if [ "$total_memory" -lt 15500 ]; then
+        echo "[✘] RAM: Less than 16GB (Detected: ${total_memory}MB)"
+        echo "❌ At least 16GB RAM is required. Please upgrade your RAM to proceed."
         exit 1
+    else
+        checklist+="[✔] RAM: 16GB or more (${total_memory}MB)\n"
     fi
 
-    if ! command -v docker &> /dev/null; then
-        echo "❌ Docker is not installed. Please install Docker before proceeding."
-        exit 1
+    # Check required packages
+    REQUIRED_PACKAGES=("docker" "docker-compose" "git" "curl" "wget" "build-essential" "python3-pip")
+    for package in "${REQUIRED_PACKAGES[@]}"; do
+        if command -v $package &> /dev/null; then
+            checklist+="[✔] $package: Installed\n"
+        else
+            checklist+="[✘] $package: Not Installed\n"
+            requirements_met=false
+        fi
+    done
+
+    # Display checklist
+    echo -e "========================================="
+    echo -e "         System Requirements Checklist"
+    echo -e "========================================="
+    echo -e "$checklist"
+    echo -e "========================================="
+
+    # Handle unmet requirements
+    if [ "$requirements_met" = false ]; then
+        echo "⚠️ Some requirements are not met. Installing pre-requisites..."
+        install_prerequisites
+    else
+        echo "✅ All system requirements are met. Proceeding with installation."
     fi
-
-    if ! command -v docker-compose &> /dev/null; then
-        echo "❌ Docker Compose is not installed. Please install Docker Compose before proceeding."
-        exit 1
-    fi
-
-    echo "✅ System requirements met."
 }
 
-# Install Prerequisites
-install_prerequisites() {
-    echo "🛠 Installing prerequisites..."
-    sudo apt update && sudo apt upgrade -y
-    sudo apt install -y docker docker-compose git curl wget build-essential python3-pip yara
+# Check for Existing Directories and Handle User Confirmation
+check_and_remove_existing() {
+    # Define the directories to check
+    DIRECTORIES=(
+        "/opt/socarium"
+        "/opt/socarium/iris_web"
+        "/opt/socarium/misp"
+        "/opt/socarium/wazuh-docker"
+        "/opt/socarium/opencti"
+        "/opt/socarium/shuffle"
+    )
+
+    for DIR in "${DIRECTORIES[@]}"; do
+        if [ -d "$DIR" ]; then
+            echo "⚠️ Directory $DIR already exists."
+            read -p "Do you want to remove it and create a new one? (Y/N): " confirm
+            case "$confirm" in
+                [Yy]*)
+                    echo "🗑 Removing $DIR..."
+                    rm -rf "$DIR"
+                    echo "✅ $DIR removed."
+                    ;;
+                [Nn]*)
+                    echo "❌ Installation stopped by user."
+                    exit 1
+                    ;;
+                *)
+                    echo "Invalid input. Please type Y or N."
+                    exit 1
+                    ;;
+            esac
+        fi
+    done
+
+    # Ensure base directory exists
+    mkdir -p /opt/socarium
+    echo "✅ All directories are ready for installation."
 }
 
-# Install All Socarium Modules
-install_socarium_modules() {
-    echo "🚀 Installing all Socarium modules..."
-    install_wazuh
-    install_dfir_iris
-    install_shuffle
-    install_misp
-    install_opencti
-    install_yara
-    echo "✅ All Socarium modules installed successfully!"
-    display_running_services
-}
+# Dynamically load all platform-specific installation scripts
+for module in $BASE_DIR/*/*.sh; do
+    source "$module"
+done
 
-# Install Individual Modules
-install_wazuh() {
-    echo "🚀 Installing Wazuh..."
-    docker-compose -f $BASE_DIR/wazuh/docker-compose.yml up -d
-}
+# Display Welcome Banner
+welcome_banner
 
-install_dfir_iris() {
-    echo "🚀 Installing DFIR IRIS..."
-    docker-compose -f $BASE_DIR/iris/docker-compose.yml up -d
-}
+# Check System Requirements
+check_requirements
 
-install_shuffle() {
-    echo "🚀 Installing Shuffle..."
-    docker-compose -f $BASE_DIR/shuffle/docker-compose.yml up -d
-}
+# Check for Existing Directories
+check_and_remove_existing
 
-install_misp() {
-    echo "🚀 Installing MISP..."
-    docker-compose -f $BASE_DIR/misp/docker-compose.yml up -d
-}
-
-install_opencti() {
-    echo "🚀 Installing OpenCTI..."
-    docker-compose -f $BASE_DIR/opencti/docker-compose.yml up -d
-}
-
-install_yara() {
-    echo "🚀 Installing Yara..."
-    sudo apt install -y yara
-}
-
-# Uninstall All Modules
-uninstall_all() {
-    echo "🗑️ Removing all Socarium modules..."
-    docker-compose down -v || true
-    docker system prune -af || true
-    rm -rf "$BASE_DIR"
-    echo "✅ All Socarium modules have been removed."
-}
-
-# Display Running Services
-display_running_services() {
-    echo "==============================================================="
-    echo "       Running Socarium Modules and Access Details            "
-    echo "==============================================================="
-    docker ps --format "table {{.Names}}\t{{.Ports}}"
-    echo "==============================================================="
-    echo "Access Details:"
-    echo "Wazuh:     http://<your-server-ip>:5601 (admin / admin)"
-    echo "IRIS:      http://<your-server-ip>:8080 (iris_admin / iris_admin)"
-    echo "Shuffle:   http://<your-server-ip>:3001 (admin@example.com / password)"
-    echo "MISP:      http://<your-server-ip>:80   (admin@admin.test / admin)"
-    echo "OpenCTI:   http://<your-server-ip>:8082 (admin@opencti.io / admin)"
-    echo "==============================================================="
-}
-
-# Help Menu
-show_help() {
-    echo "📝 Help Menu"
-    echo "1) Check Requirements: Validates your system's resources."
-    echo "2) Install Prerequisites: Installs required tools."
-    echo "3) Install Socarium Modules: Installs all SOC tools."
-    echo "4-9) Install Individual Modules: Installs Wazuh, DFIR IRIS, Shuffle, etc."
-    echo "10) Uninstall All: Removes all modules and cleans up."
-    echo "11) Help: Displays this menu."
-    echo "12) Exit: Exits the script."
-}
-
-# Main Menu
+# Menu-driven selection
 while true; do
-    clear
-    welcome_banner
     echo "================================="
-    echo "Socarium Management Menu"
+    echo "SOC Tools Installation Menu"
     echo "================================="
-    echo "1) Check Requirements"
-    echo "2) Install Prerequisites"
-    echo "3) Install Socarium Modules"
-    echo "4) Install Wazuh"
-    echo "5) Install DFIR IRIS"
-    echo "6) Install Shuffle"
-    echo "7) Install MISP"
-    echo "8) Install OpenCTI"
-    echo "9) Install Yara"
-    echo "10) Uninstall All"
-    echo "11) Help"
-    echo "12) Exit"
+    echo "1. Install Prerequisites"
+    echo "2. Install All (Automated, Excluding YARA)"
+    echo "3. Install Wazuh"
+    echo "4. Install OpenCTI"
+    echo "5. Install MISP"
+    echo "6. Install DFIR IRIS"
+    echo "7. Install Shuffle (Last)"
+    echo "8. YARA Manual Step (Instructions)"
+    echo "9. Exit"
     echo "================================="
-    read -p "Choose an option [1-12]: " choice
+    read -p "Choose an option [1-9]: " choice
     case $choice in
-        1) check_requirements ;;
-        2) install_prerequisites ;;
-        3) install_socarium_modules ;;
-        4) install_wazuh ;;
-        5) install_dfir_iris ;;
-        6) install_shuffle ;;
-        7) install_misp ;;
-        8) install_opencti ;;
-        9) install_yara ;;
-        10) uninstall_all ;;
-        11) show_help ;;
-        12) echo "Exiting..."; break ;;
+        1) install_prerequisites ;;
+        2)
+            echo "🚀 Installing all components in the correct order..."
+            install_prerequisites
+            install_wazuh
+            install_opencti
+            install_misp
+            install_dfir_iris
+            install_shuffle
+            echo "✅ All components installed successfully!"
+            ;;
+        3) install_wazuh ;;
+        4) install_opencti ;;
+        5) install_misp ;;
+        6) install_dfir_iris ;;
+        7) install_shuffle ;;
+        8) install_yara_manual ;;
+        9) echo "Exiting..."; break ;;
         *) echo "Invalid option, please choose again." ;;
     esac
 done
 
-echo "✅ Socarium management completed!"
+echo "✅ Installation menu completed!"
