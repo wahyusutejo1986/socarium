@@ -42,16 +42,6 @@ check_requirements() {
         checklist+="[✔] OS: Ubuntu 22.04 LTS (Detected: $os_version)\n"
     fi
 
-    # Check memory requirements
-    total_memory=$(free -m | awk '/^Mem:/{print $2}')
-    if [ "$total_memory" -lt 15500 ]; then
-        echo "[✘] RAM: Less than 16GB (Detected: ${total_memory}MB)"
-        echo "❌ At least 16GB RAM is required. Please upgrade your RAM to proceed."
-        exit 1
-    else
-        checklist+="[✔] RAM: 16GB or more (${total_memory}MB)\n"
-    fi
-
     # Check required packages
     REQUIRED_PACKAGES=("docker" "docker-compose" "git" "curl" "wget")
     for package in "${REQUIRED_PACKAGES[@]}"; do
