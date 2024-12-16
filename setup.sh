@@ -27,14 +27,6 @@ welcome_banner() {
     echo "==============================================================="
 }
 
-# Cleanup Function
-cleanup() {
-    echo "🧹 Cleaning up incomplete installations..."
-    sudo docker-compose down || true
-    sudo rm -rf "$BASE_DIR"/*
-    echo "Cleanup completed."
-}
-
 # Check Requirements
 check_requirements() {
     echo "🛠 Checking system requirements..."
