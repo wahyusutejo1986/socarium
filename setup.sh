@@ -126,7 +126,7 @@ welcome_banner
 check_requirements
 
 # Check for Existing Directories
-check_and_remove_existing
+#check_and_remove_existing
 
 # Menu-driven selection
 while true; do
