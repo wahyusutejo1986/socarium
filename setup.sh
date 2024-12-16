@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e  # Exit immediately if a command exits with a non-zero status.
-trap cleanup ERR  # Trap errors and perform cleanup.
+##trap cleanup ERR  # Trap errors and perform cleanup.
 
 # Base setup
 BASE_DIR="modules"
