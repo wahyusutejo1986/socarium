@@ -88,7 +88,7 @@ check_requirements() {
 }
 
 # Check for Existing Directories and Handle User Confirmation
-check_and_remove_existing() {
+check_and_update_or_install() {
     # Define the directories to check
     DIRECTORIES=(        
         "/opt/socarium/iris_web"
@@ -101,27 +101,34 @@ check_and_remove_existing() {
     for DIR in "${DIRECTORIES[@]}"; do
         if [ -d "$DIR" ]; then
             echo "⚠️ Directory $DIR already exists."
-            read -p "Do you want to remove it and create a new one? (Y/N): " confirm
-            case "$confirm" in
-                [Yy]*)
-                    echo "🗑 Removing $DIR..."
-                    rm -rf "$DIR"
-                    echo "✅ $DIR removed."
+            echo "Updating $DIR with the latest changes..."
+            (cd "$DIR" && git pull)
+            echo "✅ $DIR updated."
+        else
+            echo "✅ Directory $DIR does not exist. Creating it..."
+            mkdir -p "$DIR"
+            echo "Running installation for $DIR..."
+            # Call the appropriate installation function based on the directory
+            case "$DIR" in
+                "/opt/socarium/iris_web")
+                    install_dfir_iris
                     ;;
-                [Nn]*)
-                    echo "❌ Installation stopped by user."
-                    exit 1
+                "/opt/socarium/misp")
+                    install_misp
                     ;;
-                *)
-                    echo "Invalid input. Please type Y or N."
-                    exit 1
+                "/opt/socarium/wazuh-docker")
+                    install_wazuh
+                    ;;
+                "/opt/socarium/opencti")
+                    install_opencti
+                    ;;
+                "/opt/socarium/shuffle")
+                    install_shuffle
                     ;;
             esac
         fi
     done
 
-    # Ensure base directory exists
-    mkdir -p /opt/socarium
     echo "✅ All directories are ready for installation."
 }
 

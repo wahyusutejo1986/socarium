@@ -8,7 +8,7 @@ install_dfir_iris() {
     cd $BASE_DIR/iris-web
     git checkout v2.3.7
     cp .env.model .env
-    sudo docker compose build || error_handler "Building DFIR IRIS Containers"
+    sudo docker-compose build || error_handler "Building DFIR IRIS Containers"
     sudo docker-compose up -d || error_handler "Starting DFIR IRIS Containers"
     cd -
 }

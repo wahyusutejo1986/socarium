@@ -7,7 +7,7 @@ install_misp() {
     git clone $MISP_REPO $BASE_DIR/MISP || error_handler "Cloning MISP Repository"
     cd $BASE_DIR/MISP
     cp template.env .env
-    docker compose pull
-    docker compose up -d || error_handler "Starting MISP Containers"
+    sudo docker-compose pull
+    sudo docker-compose up -d || error_handler "Starting MISP Containers"
     cd -
 }
