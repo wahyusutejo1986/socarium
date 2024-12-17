@@ -16,7 +16,7 @@ sudo apt install -y apt-transport-https ca-certificates curl software-properties
 
 # Step 3: Add Docker’s official GPG key
 echo "Adding Docker's GPG key..."
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg --yes
 
 # Step 4: Set up the Docker repository
 echo "Setting up Docker repository..."

@@ -5,6 +5,7 @@ set -e  # Exit immediately if a command exits with a non-zero status.
 
 # Base setup
 BASE_DIR="modules"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_FILE="/var/log/socarium_setup.log"
 exec > >(tee -a "$LOG_FILE") 2>&1  # Redirect output to log file.
 
@@ -115,8 +116,13 @@ check_and_update_or_install() {
 }
 
 # Dynamically load all platform-specific installation scripts
-for module in $BASE_DIR/*/*.sh; do
-    source "$module"
+for module in "$SCRIPT_DIR"/modules/*/*.sh; do
+    if [ -f "$module" ]; then
+        echo "Loading module: $module"
+        source "$module"
+    else
+        echo "⚠ Module $module not found. Skipping..."
+    fi
 done
 
 # Display Welcome Banner
