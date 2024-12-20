@@ -18,7 +18,7 @@ check_whiptail() {
 # Interactive Menu with Welcome Banner
 show_menu() {
     while true; do
-        OPTION=$(whiptail --title "Socarium Installation Menu" --menu "🚀 Socarium is a modular, open-source Security Operations Center (SOC) management package designed to simplify the deployment, management, and testing of SOC platforms.\n\nDeveloped collaboratively by JICA and idCARE UI, Socarium integrates industry-standard tools like Wazuh, DFIR IRIS, Shuffle, MISP, and OpenCTI, providing a streamlined approach to cybersecurity monitoring, analysis, and incident response.\n\nChoose an option:" 20 90 10 \
+        OPTION=$(whiptail --title "Socarium Installation Menu" --menu "🚀 Socarium is a modular, open-source Security Operations Center (SOC) management package designed to simplify the deployment, management, and testing of SOC platforms.\n\nDeveloped collaboratively by JICA and idCARE UI, Socarium integrates industry-standard tools like Wazuh, DFIR IRIS, Shuffle, MISP, and OpenCTI, providing a streamlined approach to cybersecurity monitoring, analysis, and incident response.\n\nChoose an option:" 20 190 10 \
         "1" "Install Prerequisites" \
         "2" "Auto-Install All Packages" \
         "3" "Install Wazuh" \
