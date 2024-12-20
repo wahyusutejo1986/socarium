@@ -50,7 +50,7 @@ install_dfir_iris() {
     # Handle .env file
     if [ ! -f ".env" ]; then
         echo "📄 Creating .env file from .env.model..."
-        cp .env.model .env || error_handler "Copying .env file"
+        cp modules/dfir_iris/env_default /opt/socarium/iris_web/.env || error_handler "Copying .env file"        
     else
         echo "✅ .env file already exists. Skipping."
     fi
