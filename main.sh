@@ -3,16 +3,6 @@
 # Main.sh: Socarium Interactive Menu with Whiptail
 # Author: Gamutech Services Indonesia
 
-# Load installation scripts
-source ./auto_install_all_packages.sh
-source ./modules/prerequisites.sh
-source ./modules/wazuh.sh
-source ./modules/opencti.sh
-source ./modules/misp.sh
-source ./modules/dfir_iris.sh
-source ./modules/shuffle.sh
-source ./modules/yara_manual.sh
-
 # Function to check and install Whiptail
 check_whiptail() {
     if ! command -v whiptail &> /dev/null; then
@@ -38,39 +28,48 @@ show_menu() {
         "7" "Install Shuffle" \
         "8" "YARA Manual Installation Instructions" \
         "9" "Exit" 3>&1 1>&2 2>&3)
-        
+
         case $OPTION in
             1)
+                source ./modules/prerequisites/prerequisites.sh
+                source ./modules/prerequisites/docker.sh
                 install_prerequisites
                 whiptail --msgbox "✅ Prerequisites installed successfully!" 10 50
                 ;;
             2)
-                ./auto_install_all_packages.sh
+                ./install_all.sh
                 whiptail --msgbox "✅ All SOC packages installed successfully!" 10 50
                 ;;
             3)
+                source ./modules/wazuh/wazuh.sh
                 install_wazuh
                 whiptail --msgbox "✅ Wazuh installed successfully!" 10 50
                 ;;
             4)
+                source ./modules/opencti/opencti.sh
                 install_opencti
                 whiptail --msgbox "✅ OpenCTI installed successfully!" 10 50
                 ;;
             5)
+                source ./modules/misp/misp.sh
                 install_misp
                 whiptail --msgbox "✅ MISP installed successfully!" 10 50
                 ;;
             6)
+                source ./modules/dfir_iris/dfir_iris.sh
                 install_dfir_iris
                 whiptail --msgbox "✅ DFIR IRIS installed successfully!" 10 50
                 ;;
             7)
+                source ./modules/shuffle/shuffle.sh
                 install_shuffle
                 whiptail --msgbox "✅ Shuffle installed successfully!" 10 50
                 ;;
             8)
+                source ./modules/yara/yara_manual.sh
                 install_yara_manual
                 whiptail --msgbox "✅ Follow manual YARA installation instructions!" 10 50
+                whiptail --msgbox "🚀 Use the following command on endpoints: sudo apt install -y yara" 10 50
                 ;;
             9)
                 whiptail --msgbox "Exiting Socarium Setup. Goodbye!" 10 50
