@@ -15,10 +15,10 @@ check_whiptail() {
     fi
 }
 
-# Interactive Menu
+# Interactive Menu with Welcome Banner
 show_menu() {
     while true; do
-        OPTION=$(whiptail --title "Socarium Installation Menu" --menu "Choose an option:" 20 60 10 \
+        OPTION=$(whiptail --title "Socarium Installation Menu" --menu "🚀 Socarium is a modular, open-source Security Operations Center (SOC) management package designed to simplify the deployment, management, and testing of SOC platforms.\n\nDeveloped collaboratively by JICA and idCARE UI, Socarium integrates industry-standard tools like Wazuh, DFIR IRIS, Shuffle, MISP, and OpenCTI, providing a streamlined approach to cybersecurity monitoring, analysis, and incident response.\n\nChoose an option:" 20 90 10 \
         "1" "Install Prerequisites" \
         "2" "Auto-Install All Packages" \
         "3" "Install Wazuh" \
@@ -29,10 +29,17 @@ show_menu() {
         "8" "YARA Manual Installation Instructions" \
         "9" "Exit" 3>&1 1>&2 2>&3)
 
+        # Check exit status of Whiptail
+        STATUS=$?
+        if [ $STATUS -ne 0 ]; then
+            # Exit if Cancel or Esc is pressed
+            whiptail --msgbox "Exiting Socarium Setup. Goodbye!" 10 50
+            exit 0
+        fi
+
         case $OPTION in
             1)
                 source ./modules/prerequisites/prerequisites.sh
-                source ./modules/prerequisites/docker.sh
                 install_prerequisites
                 whiptail --msgbox "✅ Prerequisites installed successfully!" 10 50
                 ;;
