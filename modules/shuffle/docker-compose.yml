@@ -4,10 +4,10 @@ services:
     container_name: shuffle-frontend
     hostname: shuffle-frontend
     ports:
-      - "${FRONTEND_PORT}:8003"
-      - "${FRONTEND_PORT_HTTPS}:4433"
+      - "${FRONTEND_PORT}:80"
+      - "${FRONTEND_PORT_HTTPS}:443"
     networks:
-      - shuffle
+      - socarium-network
     environment:
       - BACKEND_HOSTNAME=${BACKEND_HOSTNAME}
     restart: unless-stopped
@@ -21,7 +21,7 @@ services:
     ports:
       - "${BACKEND_PORT}:5001"
     networks:
-      - shuffle
+      - socarium-network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${SHUFFLE_APP_HOTLOAD_LOCATION}:/shuffle-apps:z
@@ -37,7 +37,7 @@ services:
     container_name: shuffle-orborus
     hostname: shuffle-orborus
     networks:
-      - shuffle
+      - socarium-network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
@@ -85,50 +85,10 @@ services:
     volumes:
       - shuffle-database:/usr/share/opensearch/data:z
     ports:
-      - 9201:9200
+      - 9202:9200
     networks:
-      - shuffle
+      - socarium-network
     restart: unless-stopped
-
-  #memcached:
-  #  image: memcached:latest
-  #  container_name: shuffle-cache
-  #  hostname: shuffle-cache
-  #  mem_limit: 1024m
-  #  environment:
-  #    - MEMCACHED_MEMORY=1024
-  #    - MEMCACHED_MAX_CONNECTIONS=2500
-  #  ports:
-  #    - 11211:11211
-  
-  #docker-socket-proxy:
-  #  image: tecnativa/docker-socket-proxy
-  #  container_name: docker-socket-proxy 
-  #  hostname: docker-socket-proxy
-  #  privileged: true
-  #  environment:
-  #    - SERVICES=1
-  #    - TASKS=1
-  #    - NETWORKS=1
-  #    - NODES=1
-  #    - BUILD=1
-  #    - IMAGES=1
-  #    - GRPC=1
-  #    - CONTAINERS=1
-  #    - PLUGINS=1
-  #    - SYSTEM=1
-  #    - VOLUMES=1
-  #    - INFO=1
-  #    - DISTRIBUTION=1
-  #    - POST=1
-  #    - AUTH=1
-  #    - SECRETS=1
-  #    - SWARM=1
-  #  volumes:
-  #    - /var/run/docker.sock:/var/run/docker.sock
-  #  networks:
-  #    - shuffle
-  #
 
 volumes:
   shuffle-database:
@@ -139,8 +99,5 @@ volumes:
       o: bind
 
 networks:
-  shuffle:
-    driver: bridge
-    # driver_opts:
-    #   com.docker.network.driver.mtu: 1460
-    # uncomment to set MTU for swarm mode. MTU should be whatever is your host's preferred MTU is: https://shuffler.io/docs/troubleshooting#TLS_timeout_error/Timeout_Errors/EOF_Errors 
+  socarium-network:
+    external: true

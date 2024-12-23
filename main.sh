@@ -166,17 +166,17 @@ show_menu() {
                 whiptail --msgbox "✅ All SOC packages installed successfully!" 10 50
                 ;;
             3)
-                (
-                    echo 0
-                    echo "Installing Wazuh..." >> socarium_install.log 2>&1
+                #(
+                #    echo 0
+                #    echo "Installing Wazuh..." >> socarium_install.log 2>&1
                     source ./modules/wazuh/wazuh.sh >> socarium_install.log 2>&1
                     install_wazuh >> socarium_install.log 2>&1
-                    echo 50
-                    echo "Finalizing installation..." >> socarium_install.log 2>&1
-                    sleep 1
-                    echo 100
-                ) | whiptail --gauge "Installing Wazuh. Please wait..." 10 70 0
-                whiptail --msgbox "✅ Wazuh installed successfully!" 10 50
+                #    echo 50
+                #    echo "Finalizing installation..." >> socarium_install.log 2>&1
+                #    sleep 1
+                #    echo 100
+                #) | whiptail --gauge "Installing Wazuh. Please wait..." 10 70 0
+                #whiptail --msgbox "✅ Wazuh installed successfully!" 10 50
                 ;;
             4)
                 (
