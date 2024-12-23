@@ -40,9 +40,6 @@ install_wazuh() {
     local BASE_DIR="/opt/socarium"
     local WAZUH_REPO="https://github.com/wazuh/wazuh-docker.git -b v4.9.2"
 
-    # Generate self-signed certificate
-    sudo docker-compose -f $BASE_DIR/wazuh-docker/single-node/generate-indexer-certs.yml run --rm generator || handle_error "Failed to generate self-signed certificate"
-
     # Create directory with proper permissions (if not exists)
     sudo mkdir -p $BASE_DIR || handle_error "Failed to create $BASE_DIR"
     sudo chown -R $USER:$USER $BASE_DIR || handle_error "Failed to set ownership for $BASE_DIR"
