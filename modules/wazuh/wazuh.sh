@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Function to handle errors
-#handle_error() {
-#    echo "❌ $1. Exiting..."
-#    exit 1
-#}
+handle_error() {
+    echo "❌ $1. Exiting..."
+    exit 1
+}
 
 # Function to check required tools
 check_tools() {
