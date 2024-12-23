@@ -15,18 +15,6 @@ check_whiptail() {
     fi
 }
 
-# Function to check system overview
-check_system() {
-    OS=$(lsb_release -d | awk -F":" '{print $2}')
-    KERNEL=$(uname -r)
-    CPU=$(lscpu | grep 'Model name' | awk -F":" '{print $2}')
-    RAM=$(free -h | grep Mem | awk '{print $2}')
-    DISK=$(df -h / | grep / | awk '{print $4}')
-    NETWORK=$(ip -4 addr show | grep inet | awk '{print $2}')
-
-    whiptail --msgbox "System Overview:\nOS: $OS\nKernel: $KERNEL\nCPU: $CPU\nRAM: $RAM\nDisk Available: $DISK\nNetworks: $NETWORK" 20 70
-}
-
 # Function to check if directory exists
 check_directory() {
     local DIR="/opt/socarium"
@@ -119,7 +107,7 @@ check_status() {
 # Interactive Menu with Welcome Banner
 show_menu() {
     while true; do
-        OPTION=$(whiptail --title "Socarium Installation Menu" --menu "🚀 Socarium is a modular, open-source Security Operations Center (SOC) management package designed to simplify the deployment, management, and testing of SOC platforms.\n\nDeveloped collaboratively by JICA and idCARE UI, Socarium integrates industry-standard tools like Wazuh, DFIR IRIS, Shuffle, MISP, and OpenCTI, providing a streamlined approach to cybersecurity monitoring, analysis, and incident response.\n\nChoose an option:" 20 190 10 \
+        OPTION=$(whiptail --title "Socarium Installation Menu" --menu "\nPlease select an option:" 20 70 10 \
         "1" "Install Prerequisites" \
         "2" "Auto-Install All Packages" \
         "3" "Install Wazuh" \
@@ -141,89 +129,52 @@ show_menu() {
 
         case $OPTION in
             1)
-                (
-                    echo 0
-                    echo "Updating system..." >> socarium_install.log 2>&1
-                    source ./modules/prerequisites/prerequisites.sh >> socarium_install.log 2>&1
-                    install_prerequisites >> socarium_install.log 2>&1
-                    echo 50
-                    echo "Finalizing installation..." >> socarium_install.log 2>&1
-                    sleep 1
-                    echo 100
-                ) | whiptail --gauge "Installing prerequisites. Please wait..." 10 70 0
+                    source ./modules/prerequisites/prerequisites.sh 
+                    install_prerequisites 
+
                 whiptail --msgbox "✅ Prerequisites installed successfully!" 10 50
                 ;;
             2)
-                (
-                    echo 0
-                    echo "Starting full installation..." >> socarium_install.log 2>&1
-                    ./install_all.sh >> socarium_install.log 2>&1
-                    echo 50
-                    echo "Finalizing installation..." >> socarium_install.log 2>&1
-                    sleep 1
-                    echo 100
-                ) | whiptail --gauge "Installing all SOC packages. Please wait..." 10 70 0
+              
+                    ./install_all.sh 
+                   
                 whiptail --msgbox "✅ All SOC packages installed successfully!" 10 50
                 ;;
             3)
-                #(
-                #    echo 0
-                #    echo "Installing Wazuh..." >> socarium_install.log 2>&1
-                    source ./modules/wazuh/wazuh.sh >> socarium_install.log 2>&1
-                    install_wazuh >> socarium_install.log 2>&1
-                #    echo 50
-                #    echo "Finalizing installation..." >> socarium_install.log 2>&1
-                #    sleep 1
-                #    echo 100
-                #) | whiptail --gauge "Installing Wazuh. Please wait..." 10 70 0
-                #whiptail --msgbox "✅ Wazuh installed successfully!" 10 50
+                    source ./modules/wazuh/wazuh.sh 
+                    install_wazuh 
+       
+                whiptail --msgbox "✅ Wazuh installed successfully!" 10 50
                 ;;
             4)
-                (
-                    echo 0
-                    echo "Installing OpenCTI..." >> socarium_install.log 2>&1
-                    source ./modules/opencti/opencti.sh >> socarium_install.log 2>&1
-                    install_opencti >> socarium_install.log 2>&1
-                    echo 50
-                    echo "Finalizing installation..." >> socarium_install.log 2>&1
-                    sleep 1
-                    echo 100
-                ) | whiptail --gauge "Installing OpenCTI. Please wait..." 10 70 0
+                    source ./modules/opencti/opencti.sh 
+                    install_opencti 
+                
                 whiptail --msgbox "✅ OpenCTI installed successfully!" 10 50
                 ;;
             5)
-                (
-                    echo 0
-                    echo "Installing MISP..." >> socarium_install.log 2>&1
-                    source ./modules/misp/misp.sh >> socarium_install.log 2>&1
-                    install_misp >> socarium_install.log 2>&1
-                    echo 50
-                    echo "Finalizing installation..." >> socarium_install.log 2>&1
-                    sleep 1
-                    echo 100
-                ) | whiptail --gauge "Installing MISP. Please wait..." 10 70 0
+                
+                    source ./modules/misp/misp.sh 
+                    install_misp 
+                   
                 whiptail --msgbox "✅ MISP installed successfully!" 10 50
                 ;;
             6)
                 source ./modules/dfir_iris/dfir_iris.sh
                 install_dfir_iris  # The function will handle the progress display
+
+                whiptail --msgbox "✅ DFIR-IRIS installed successfully!" 10 50
                 ;;
             7)
-                (
-                    echo 0
-                    echo "Installing Shuffle..." >> socarium_install.log 2>&1
-                    source ./modules/shuffle/shuffle.sh >> socarium_install.log 2>&1
-                    install_shuffle >> socarium_install.log 2>&1
-                    echo 50
-                    echo "Finalizing installation..." >> socarium_install.log 2>&1
-                    sleep 1
-                    echo 100
-                ) | whiptail --gauge "Installing Shuffle. Please wait..." 10 70 0
+                
+                    source ./modules/shuffle/shuffle.sh 
+                    install_shuffle 
+                   
                 whiptail --msgbox "✅ Shuffle installed successfully!" 10 50
                 ;;
             8)
-                source ./modules/yara/yara_manual.sh >> socarium_install.log 2>&1
-                install_yara_manual >> socarium_install.log 2>&1
+                source ./modules/yara/yara_manual.sh 
+                install_yara_manual 
                 whiptail --msgbox "✅ Follow manual YARA installation instructions!" 10 50
                 whiptail --msgbox "🚀 Use the following command on endpoints: sudo apt install -y yara" 10 50
                 ;;
