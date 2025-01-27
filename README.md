@@ -92,6 +92,20 @@
 - **Disk Space:** At least 100GB of free space.
 - **Operating System:** Linux (Ubuntu recommended).
 
+<div align="center" width="100" height="100">
+
+  <h3 align="center">Recommendation Deployement</h3>
+
+  <p align="center">
+    <br />
+    <a href="https://github.com/wahyusutejo1986/socarium/blob/main/images/Infrastructure%20Deployement.png">
+    <img src="images/Infrastructure%20Deployement.png">
+    </a>
+    <br />
+    <br />
+  </p>
+</div>
+
 ---
 
 ## Installation and Setup
