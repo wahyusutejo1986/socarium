@@ -65,16 +65,6 @@
 | **Grafana**         | `modules/grafana/docker-compose.yml`            |
 | **OpenCTI**         | `modules/opencti/docker-compose.yml`            |
 
-### **Docs Folder Structure**
-
-| **Platform**        | **Documentation Files**                        |
-|---------------------|------------------------------------------------|
-| **Wazuh**           | `docs/wazuh/details.md`, `docs/wazuh/screenshots/` |
-| **IRIS**            | `docs/iris/details.md`, `docs/iris/screenshots/` |
-| **Shuffle**         | `docs/shuffle/details.md`, `docs/shuffle/screenshots/` |
-| **MISP**            | `docs/misp/details.md`, `docs/misp/screenshots/` |
-| **OpenCTI**         | `docs/opencti/details.md`, `docs/opencti/screenshots/` |
-
 ### **PoC Folder Structure**
 
 | **Simulation**            | **Description**                                               |
@@ -91,20 +81,6 @@
 - **Memory:** Minimum 16GB RAM.
 - **Disk Space:** At least 100GB of free space.
 - **Operating System:** Linux (Ubuntu recommended).
-
-<div align="left" width="100" height="100">
-
-  <h3 align="left">Recommendation Deployement</h3>
-
-  <p align="left">
-    <br />
-    <a href="https://github.com/wahyusutejo1986/socarium/blob/main/images/Infrastructure%20Deployement.png">
-    <img src="images/Infrastructure%20Deployement.png">
-    </a>
-    <br />
-    <br />
-  </p>
-</div>
 
 ---
 
