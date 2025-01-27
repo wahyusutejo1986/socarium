@@ -86,8 +86,6 @@
 
 ## Installation and Setup
 
-### **Clone the Repository**
-
 Installation and configuration manuals please refers into GitHub Wiki (https://github.com/wahyusutejo1986/socarium/wiki)
 
 ---
