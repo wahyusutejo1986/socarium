@@ -197,10 +197,6 @@ The `poc/` folder contains scripts and descriptions for attack simulations:
 
 ## Advanced Features
 
-### **Backup and Restore**
-- Add backup functionality for logs, configurations, and dashboards.
-- Use the `setup.sh` script to schedule automatic backups.
-
 ### **Monitoring and Metrics**
 - Integrate **Prometheus** and **Grafana** for monitoring resource usage and SOC metrics.
 
