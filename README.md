@@ -88,18 +88,7 @@
 
 ### **Clone the Repository**
 
-```bash
-git clone <repository-url>
-cd soc
-```
-
-### **Run the Setup Script**
-
-Make the script executable and launch the management menu:
-```bash
-chmod +x *.sh
-./main.sh
-```
+Installation and configuration manuals please refers into GitHub Wiki (https://github.com/wahyusutejo1986/socarium/wiki)
 
 ---
 
