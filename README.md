@@ -12,8 +12,8 @@
 
   <p align="center">
     <br />
-    <a href="https://github.com/socfortress/iris-velociraptorartifact-module/tree/main/images/config.PNG">
-    <img src="images/config.PNG">
+    <a href="https://github.com/wahyusutejo1986/socarium/blob/main/images/socarium.png">
+    <img src="images/socarium.png">
     </a>
     <br />
     <br />
