@@ -29,13 +29,15 @@
 
 ## Repository Structure
 
-| **Folder/File**     | **Purpose**                                                                 |
-|---------------------|-----------------------------------------------------------------------------|
-| `setup.sh`          | Main script to install, configure, and manage all SOC platforms.           |
-| `README.md`         | Comprehensive guide for using and understanding the repository.            |
-| `modules/`          | Contains Docker Compose configurations for SOC platforms.                  |
-| `docs/`             | Documentation, guides, and troubleshooting for each SOC platform.          |
-| `poc/`              | Proof of Concept (PoC) attack simulations for testing SOC configurations.   |
+| **Folder/File**             | **Purpose**                                                                |
+|-----------------------------|----------------------------------------------------------------------------|
+| `main.sh`                   | Main script to install, configure, and manage all SOC platforms.           |
+| `health_check.sh`           | Script check for the docker installation before the deploys.               |
+| `install_all.sh`            | Script install the main tools of SOC package with single option.           |
+| `install_prerequisites.sh`  | Script to install all dependencies are needed for the deployment.          |
+| `README.md`                 | Comprehensive guide for using and understanding the repository.            |
+| `modules/`                  | Contains Docker Compose configurations for SOC platforms.                  |
+| `config/`                   | Contain configuration of the dockers environtment.                         |
 
 ### **Modules Folder Structure**
 
