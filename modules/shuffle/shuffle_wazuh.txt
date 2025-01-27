@@ -1,0 +1,7 @@
+<!-- Shuffle Integration -->
+<integration>
+  <name>shuffle</name>
+  <hook_url>https://103.82.92.195:3443/api/v1/hooks/webhook_f495c665-fef0-47c6-8d4d-3b80092da2bf</hook_url>
+  <level>1</level>
+  <alert_format>json</alert_format>
+</integration>
