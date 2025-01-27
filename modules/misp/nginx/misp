@@ -1,0 +1,21 @@
+server {
+    listen 5443 ssl;
+    server_name localhost;
+
+    ssl_certificate /etc/ssl/certs/misp.crt;
+    ssl_certificate_key /etc/ssl/private/misp.key;
+
+    location / {
+        proxy_pass http://localhost:80; # Proxy to MISP container's HTTP port
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /users/heartbeat {
+        proxy_pass http://localhost:80/users/heartbeat;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}

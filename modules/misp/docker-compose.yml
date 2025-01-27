@@ -1,0 +1,148 @@
+version: '3'
+services:
+  # This is capable to relay via gmail, Amazon SES, or generic relays
+  # See: https://hub.docker.com/r/ixdotai/smtp
+  mail:
+    image: ixdotai/smtp
+    environment:
+      - "SMARTHOST_ADDRESS=${SMARTHOST_ADDRESS}"
+      - "SMARTHOST_PORT=${SMARTHOST_PORT}"
+      - "SMARTHOST_USER=${SMARTHOST_USER}"
+      - "SMARTHOST_PASSWORD=${SMARTHOST_PASSWORD}"
+      - "SMARTHOST_ALIASES=${SMARTHOST_ALIASES}"
+    networks:
+      - socarium-network
+
+  redis:
+    image: valkey/valkey:7.2
+    command: "--requirepass '${REDIS_PASSWORD:-redispassword}'"
+    healthcheck:
+      test: "valkey-cli -a '${REDIS_PASSWORD:-redispassword}' -p ${REDIS_PORT:-6379} ping | grep -q PONG || exit 1"
+      interval: 2s
+      timeout: 1s
+      retries: 3
+      start_period: 5s
+      start_interval: 5s
+    networks:
+      - socarium-network
+
+  db:
+    # We use MariaDB because it supports ARM and has the expected collations
+    image: mariadb:10.11
+    restart: always
+    environment:
+      - "MYSQL_USER=${MYSQL_USER:-misp}"
+      - "MYSQL_PASSWORD=${MYSQL_PASSWORD:-socarium2024}"
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-socarium2024}"
+      - "MYSQL_DATABASE=${MYSQL_DATABASE:-misp}"
+      - "MISP_MODULES_FQDN=http://misp-modules"
+      - "WORKERS=1"      
+      - "NUM_WORKERS_DEFAULT=5"    # To set the number of default workers
+      - "NUM_WORKERS_PRIO=5"       # To set the number of prio workers
+      - "NUM_WORKERS_EMAIL=5"       # To set the number of email workers
+      - "NUM_WORKERS_UPDATE=1"      # To set the number of update workers
+      - "NUM_WORKERS_CACHE=5"       # To set the number of cache workers
+
+    command: "\
+      --innodb-buffer-pool-size=${INNODB_BUFFER_POOL_SIZE:-2048M} \
+      --innodb-change-buffering=${INNODB_CHANGE_BUFFERING:-none} \
+      --innodb-io-capacity=${INNODB_IO_CAPACITY:-1000} \
+      --innodb-io-capacity-max=${INNODB_IO_CAPACITY_MAX:-2000} \
+      --innodb-log-file-size=${INNODB_LOG_FILE_SIZE:-600M} \
+      --innodb-read-io-threads=${INNODB_READ_IO_THREADS:-16} \
+      --innodb-stats-persistent=${INNODB_STATS_PERSISTENT:-ON} \
+      --innodb-write-io-threads=${INNODB_WRITE_IO_THREADS:-4}"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE Prevent runaway mysql log
+    healthcheck:
+      test: mysqladmin --user=$$MYSQL_USER --password=$$MYSQL_PASSWORD status
+      interval: 2s
+      timeout: 1s
+      retries: 3
+      start_period: 30s
+      start_interval: 5s
+    networks:
+      - socarium-network
+
+  misp-core:
+    image: ghcr.io/misp/misp-docker/misp-core:${CORE_RUNNING_TAG:-latest}
+    cap_add:
+      - AUDIT_WRITE
+    build:
+      context: core/.
+      args:
+        - CORE_TAG=${CORE_TAG:?Missing .env file, see README.md for instructions}
+        - CORE_COMMIT=${CORE_COMMIT}
+        - PHP_VER=${PHP_VER:?Missing .env file, see README.md for instructions}
+        - PYPI_REDIS_VERSION=${PYPI_REDIS_VERSION}
+        - PYPI_LIEF_VERSION=${PYPI_LIEF_VERSION}
+        - PYPI_PYDEEP2_VERSION=${PYPI_PYDEEP2_VERSION}
+        - PYPI_PYTHON_MAGIC_VERSION=${PYPI_PYTHON_MAGIC_VERSION}
+        - PYPI_MISP_LIB_STIX2_VERSION=${PYPI_MISP_LIB_STIX2_VERSION}
+        - PYPI_MAEC_VERSION=${PYPI_MAEC_VERSION}
+        - PYPI_MIXBOX_VERSION=${PYPI_MIXBOX_VERSION}
+        - PYPI_CYBOX_VERSION=${PYPI_CYBOX_VERSION}
+        - PYPI_PYMISP_VERSION=${PYPI_PYMISP_VERSION}
+        - PYPI_MISP_STIX_VERSION=${PYPI_MISP_STIX_VERSION}
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+      misp-modules:
+        condition: service_healthy
+    healthcheck:
+      test: curl -ks ${BASE_URL:-https://103.82.92.195:10443}/users/heartbeat > /dev/null || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 3
+      start_period: 30s
+      start_interval: 30s
+    ports:
+      - "83:80"
+      - "10443:443"
+    volumes:
+      - "./configs/:/var/www/MISP/app/Config/"
+      - "./logs/:/var/www/MISP/app/tmp/logs/"
+      - "./files/:/var/www/MISP/app/files/"
+      - "./ssl/:/etc/nginx/certs/"
+      - "./gnupg/:/var/www/MISP/.gnupg/"
+    environment:
+      - "BASE_URL=${BASE_URL}"
+      # (other environment variables)
+    networks:
+      - socarium-network
+
+  misp-modules:
+    image: ghcr.io/misp/misp-docker/misp-modules:${MODULES_RUNNING_TAG:-latest}
+    build:
+      context: modules/.
+      args:
+        - MODULES_TAG=${MODULES_TAG:?Missing .env file, see README.md for instructions}
+        - MODULES_COMMIT=${MODULES_COMMIT}
+        - LIBFAUP_COMMIT=${LIBFAUP_COMMIT:?Missing .env file, see README.md for instructions}
+    environment:
+      - "REDIS_BACKEND=${REDIS_HOST:-redis}"
+      - "REDIS_PORT=${REDIS_PORT:-6379}"
+      - "REDIS_PW=${REDIS_PASSWORD:-redispassword}"
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: "/bin/bash -c '</dev/tcp/localhost/6666'"
+      interval: 2s
+      timeout: 1s
+      retries: 3
+      start_period: 5s
+      start_interval: 5s
+    networks:
+      - socarium-network
+
+volumes:
+  mysql_data:
+
+networks:
+  socarium-network:
+    external: true
