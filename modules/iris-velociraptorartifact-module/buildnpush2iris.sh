@@ -52,8 +52,6 @@ Run()
     echo "[BUILDnPUSH2IRIS] Completed!"
 }
 
-a_Flag=false
-
 while getopts ":ha" option; do
    case $option in
       h) # display Help
