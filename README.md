@@ -92,22 +92,22 @@ Installation and configuration manuals please refers into GitHub Wiki (https://g
 
 ## Setup Script Menu
 
-The `setup.sh` script provides an intuitive menu for managing Socarium:
+The `main.sh` script provides an intuitive menu for managing Socarium:
 
 | **Option**                       | **Description**                                                                 |
 |----------------------------------|---------------------------------------------------------------------------------|
-| **1) Install Prerequisites**     | Installs Docker, Docker Compose, and other necessary tools.                     |
-| **2) Deploy All Core Services**  | Installs all SOC platforms at once.                                             |
-| **3) Deploy Wazuh**              | Installs the Wazuh platform independently.                                      |
-| **4) Deploy DFIR IRIS**          | Installs the DFIR IRIS platform independently.                                  |
-| **5) Deploy Shuffle**            | Installs the Shuffle platform independently.                                    |
-| **6) Deploy MISP**               | Installs the MISP platform independently.                                       |
-| **7) Deploy Velociraptor**       | Installs the Veliciraptor platform independently.                               |
-| **8) Deploy Yara**               | Installs Yara for advanced file scanning and malware detection.                 |
-| **9) Deploy OpenCTI**            | Installs the OpenCTI platform independently.                                    |
-| **10) Deploy Grafana**           | Installs the Grafana platform independently.                                    |
-| **11) Socarium Configurations**  | Configuration the integration parts.                                            |
-| **12) Exit**                     | Exits the script.                                                               |
+| **0) Install Prerequisites**     | Installs Docker, Docker Compose, and other necessary tools.                     |
+| **1) Deploy All Core Services**  | Installs all SOC platforms at once.                                             |
+| **2) Deploy Wazuh**              | Installs the Wazuh platform independently.                                      |
+| **3) Deploy DFIR IRIS**          | Installs the DFIR IRIS platform independently.                                  |
+| **4) Deploy Shuffle**            | Installs the Shuffle platform independently.                                    |
+| **5) Deploy MISP**               | Installs the MISP platform independently.                                       |
+| **6) Deploy Velociraptor**       | Installs the Veliciraptor platform independently.                               |
+| **7) Deploy Yara**               | Installs Yara for advanced file scanning and malware detection.                 |
+| **8) Deploy OpenCTI**            | Installs the OpenCTI platform independently.                                    |
+| **9) Deploy Grafana**           | Installs the Grafana platform independently.                                    |
+| **10) Socarium Configurations**  | Configuration the integration parts.                                            |
+| **11) Exit**                     | Exits the script.                                                               |
 
 ---
 
