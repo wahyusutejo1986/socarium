@@ -92,11 +92,11 @@
 - **Disk Space:** At least 100GB of free space.
 - **Operating System:** Linux (Ubuntu recommended).
 
-<div align="center" width="100" height="100">
+<div align="left" width="100" height="100">
 
-  <h3 align="center">Recommendation Deployement</h3>
+  <h3 align="left">Recommendation Deployement</h3>
 
-  <p align="center">
+  <p align="left">
     <br />
     <a href="https://github.com/wahyusutejo1986/socarium/blob/main/images/Infrastructure%20Deployement.png">
     <img src="images/Infrastructure%20Deployement.png">
