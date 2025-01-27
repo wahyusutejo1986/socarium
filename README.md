@@ -6,6 +6,20 @@
 
 **Socarium** is a modular, open-source Security Operations Center (SOC) management package designed to simplify the deployment, management, and testing of SOC platforms. Developed collaboratively by **JICA** and **idCARE UI**, Socarium integrates industry-standard tools like Wazuh, DFIR IRIS, Shuffle, MISP, and OpenCTI, providing a streamlined approach to cybersecurity monitoring, analysis, and incident response.
 
+<div align="center" width="100" height="100">
+
+  <h3 align="center">Configuration</h3>
+
+  <p align="center">
+    <br />
+    <a href="https://github.com/socfortress/iris-velociraptorartifact-module/tree/main/images/config.PNG">
+    <img src="images/config.PNG">
+    </a>
+    <br />
+    <br />
+  </p>
+</div>
+
 ---
 
 ## Features
