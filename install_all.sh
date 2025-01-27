@@ -44,7 +44,7 @@ ensure_container_health() {
 }
 
 #Directory mapping, please check if the project name move to socarium
-SOC_DIR="/home/$(logname)/soc"
+SOC_DIR="/home/$(logname)/socarium"
 
 # Check and create Docker network socarium-network if it doesn't exist
 if sudo docker network ls | grep "socarium-network"; then
