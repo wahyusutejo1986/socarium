@@ -44,9 +44,11 @@
 | **Platform**        | **Docker Compose Location**                     |
 |---------------------|-------------------------------------------------|
 | **Wazuh**           | `modules/wazuh/docker-compose.yml`              |
-| **IRIS**            | `modules/iris/docker-compose.yml`               |
+| **IRIS**            | `modules/iris-web/docker-compose.yml`           |
 | **Shuffle**         | `modules/shuffle/docker-compose.yml`            |
 | **MISP**            | `modules/misp/docker-compose.yml`               |
+| **Velociraptor**    | `modules/velociraptor/docker-compose.yml`       |
+| **Grafana**         | `modules/grafana/docker-compose.yml`            |
 | **OpenCTI**         | `modules/opencti/docker-compose.yml`            |
 
 ### **Docs Folder Structure**
@@ -70,10 +72,10 @@
 
 ## Prerequisites
 
-### **System Requirements**
+### **Minimum System Requirements**
 
 - **Memory:** Minimum 16GB RAM.
-- **Disk Space:** At least 50GB of free space.
+- **Disk Space:** At least 100GB of free space.
 - **Operating System:** Linux (Ubuntu recommended).
 
 ### **Installed Tools**
@@ -96,15 +98,15 @@ sudo apt install -y docker docker-compose
 
 ```bash
 git clone <repository-url>
-cd socarium
+cd soc
 ```
 
 ### **Run the Setup Script**
 
 Make the script executable and launch the management menu:
 ```bash
-chmod +x setup.sh
-./setup.sh
+chmod +x *.sh
+./main.sh
 ```
 
 ---
@@ -113,20 +115,20 @@ chmod +x setup.sh
 
 The `setup.sh` script provides an intuitive menu for managing Socarium:
 
-| **Option**                | **Description**                                                                 |
-|---------------------------|---------------------------------------------------------------------------------|
-| **1) Check Requirements** | Validates system prerequisites (RAM, Docker, etc.).                            |
-| **2) Install Prerequisites** | Installs Docker, Docker Compose, and other necessary tools.                  |
-| **3) Install Socarium Modules** | Installs all SOC platforms at once.                                        |
-| **4) Install Wazuh**      | Installs the Wazuh platform independently.                                     |
-| **5) Install DFIR IRIS**  | Installs the DFIR IRIS platform independently.                                 |
-| **6) Install Shuffle**    | Installs the Shuffle platform independently.                                   |
-| **7) Install MISP**       | Installs the MISP platform independently.                                      |
-| **8) Install OpenCTI**    | Installs the OpenCTI platform independently.                                   |
-| **9) Install Yara**       | Installs Yara for advanced file scanning and malware detection.                |
-| **10) Uninstall All**     | Removes all installed SOC platforms and cleans up the system.                  |
-| **11) Help**              | Displays a detailed help guide for using the script.                          |
-| **12) Exit**              | Exits the script.                                                              |
+| **Option**                       | **Description**                                                                 |
+|----------------------------------|---------------------------------------------------------------------------------|
+| **1) Install Prerequisites**     | Installs Docker, Docker Compose, and other necessary tools.                     |
+| **2) Deploy All Core Services**  | Installs all SOC platforms at once.                                             |
+| **3) Deploy Wazuh**              | Installs the Wazuh platform independently.                                             |
+| **4) Deploy DFIR IRIS**          | Installs the DFIR IRIS platform independently.                                      |
+| **5) Deploy Shuffle**            | Installs the Shuffle platform independently.                                  |
+| **6) Deploy MISP**               | Installs the MISP platform independently.                                    |
+| **7) Deploy Grafana**            | Installs the Grafana platform independently.                                       |
+| **8) Deploy Yara**               | Installs Yara for advanced file scanning and malware detection.                                    |
+| **9) Deploy OpenCTI**            | Installs the OpenCTI platform independently.                 |
+| **10) Deploy Velociraptor**      | Removes all installed SOC platforms and cleans up the system.                   |
+| **11) Socarium Configurations**  | Displays a detailed help guide for using the script.                            |
+| **12) Exit**                     | Exits the script.                                                               |
 
 ---
 
