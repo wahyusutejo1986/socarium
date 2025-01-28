@@ -136,7 +136,7 @@ The `main.sh` script provides an intuitive menu for managing Socarium:
 
 ### **4. MISP**
 - **Purpose:** Threat intelligence sharing.
-- **URL:** `http://<your-server-ip>:80`
+- **URL:** `https://<your-server-ip>:10443`
 - **Default Credentials:**
   - Username: `admin@admin.test`
   - Password: `admin`
