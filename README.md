@@ -140,8 +140,15 @@ The `main.sh` script provides an intuitive menu for managing Socarium:
 - **Default Credentials:**
   - Username: `admin@admin.test`
   - Password: `admin`
+ 
+### **5. Velociraptor**
+- **Purpose:** End point monitoring, digital forensic, and cyber response platform.
+- **URL:** `http://<your-server-ip>:8889`
+- **Default Credentials:**
+  - Username: `admin`
+  - Password: `socarium`
 
-### **5. OpenCTI**
+### **6. OpenCTI**
 - **Purpose:** Cyber threat intelligence analysis.
 - **URL:** `http://<your-server-ip>:8082`
 - **Default Credentials:**
