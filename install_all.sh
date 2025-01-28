@@ -212,16 +212,16 @@ echo "Installing Velociraptor..."
     sudo docker-compose up -d
     echo "Velociraptor deployed successfully."
     cd $SOC_DIR
-    echo "Setup API file Integration DFIR IRIS"
-    cd $SOC_DIR/modules/velociraptor/velociraptor
-    sudo ./velociraptor --config server.config.yaml config api_client --name admin --role administrator api.config.yaml
-    sudo cp api.config.yaml $SOC_DIR/iris-web/docker/api.config.yaml
-    echo "Restart DFIR IRIS..."
-    cd $SOC_DIR/iris-web
-    sudo docker-compose down
-    sudo docker-compose up -d
-    echo "Velociraptor deployed successfully."
-    cd $SOC_DIR
+    #echo "Setup API file Integration DFIR IRIS"
+    #cd $SOC_DIR/modules/velociraptor/velociraptor
+    #sudo ./velociraptor --config server.config.yaml config api_client --name admin --role administrator api.config.yaml
+    #sudo cp api.config.yaml $SOC_DIR/iris-web/docker/api.config.yaml
+    #echo "Restart DFIR IRIS..."
+    #cd $SOC_DIR/iris-web
+    #sudo docker-compose down
+    #sudo docker-compose up -d
+    #echo "Velociraptor deployed successfully."
+    #cd $SOC_DIR
 }
 
 # Summary
