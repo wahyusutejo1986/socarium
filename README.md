@@ -115,10 +115,10 @@ The `main.sh` script provides an intuitive menu for managing Socarium:
 
 ### **1. Wazuh**
 - **Purpose:** Security monitoring and compliance management.
-- **URL:** `http://<your-server-ip>:5601`
+- **URL:** `http://<your-server-ip>`
 - **Default Credentials:**
   - Username: `admin`
-  - Password: `admin`
+  - Password: `SecretPassword`
 
 ### **2. DFIR IRIS**
 - **Purpose:** Incident response and forensic analysis.
