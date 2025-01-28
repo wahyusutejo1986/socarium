@@ -200,7 +200,7 @@ while true; do
         "3" "Deploy DFIR IRIS" \
         "4" "Deploy Shuffle" \
         "5" "Deploy MISP" \
-        "6" "Deploy Veliciraptor" \
+        "6" "Deploy Velociraptor" \
         "7" "Deploy Yara" \
         "8" "Deploy OpenCTI" \
         "9" "Deploy Grafana" \
@@ -214,7 +214,7 @@ while true; do
         3) deploy_iris ;;
         4) deploy_shuffle ;;
         5) deploy_misp ;;
-        6) deploy_veliciraptor ;;
+        6) deploy_velociraptor ;;
         7) deploy_yara ;;
         8) deploy_opencti ;;
         9) deploy_grafana ;;
