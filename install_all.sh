@@ -222,7 +222,7 @@ echo "Installing Velociraptor..."
     #sudo docker-compose up -d
     #echo "Velociraptor deployed successfully."
     #cd $SOC_DIR
-}
+#}
 
 # Summary
 echo "Installation completed for:
