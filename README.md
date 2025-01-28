@@ -122,10 +122,10 @@ The `main.sh` script provides an intuitive menu for managing Socarium:
 
 ### **2. DFIR IRIS**
 - **Purpose:** Incident response and forensic analysis.
-- **URL:** `http://<your-server-ip>:8080`
+- **URL:** `http://<your-server-ip>:8443`
 - **Default Credentials:**
-  - Username: `iris_admin`
-  - Password: `iris_admin`
+  - Username: `administrator`
+  - Password: `socarium`
 
 ### **3. Shuffle**
 - **Purpose:** SOC workflow orchestration and automation.
