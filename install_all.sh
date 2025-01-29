@@ -54,6 +54,7 @@ else
     sudo docker network create socarium-network
 fi
 
+git config --global http.postBuffer 157286400
 cd "$SOC_DIR"
 
 # Wazuh installation
@@ -137,7 +138,6 @@ fi
 
 # Shuffle installation
 echo "Installing Shuffle..."
-git config --global http.postBuffer 157286400
 if [ ! -d "Shuffle" ]; then
     git clone https://github.com/Shuffle/Shuffle.git
     cd Shuffle
