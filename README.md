@@ -111,52 +111,6 @@ The `main.sh` script provides an intuitive menu for managing Socarium:
 
 ---
 
-## SOC Platforms
-
-### **1. Wazuh**
-- **Purpose:** Security monitoring and compliance management.
-- **URL:** `https://<your-server-ip>`
-- **Default Credentials:**
-  - Username: `admin`
-  - Password: `SecretPassword`
-
-### **2. DFIR IRIS**
-- **Purpose:** Incident response and forensic analysis.
-- **URL:** `https://<your-server-ip>:8443`
-- **Default Credentials:**
-  - Username: `administrator`
-  - Password: `socarium`
-
-### **3. Shuffle**
-- **Purpose:** SOC workflow orchestration and automation.
-- **URL:** `http://<your-server-ip>:3001`
-- **Default Credentials:**
-  - Username: `admin@example.com`
-  - Password: `password`
-
-### **4. MISP**
-- **Purpose:** Threat intelligence sharing.
-- **URL:** `https://<your-server-ip>:10443`
-- **Default Credentials:**
-  - Username: `admin@admin.test`
-  - Password: `admin`
- 
-### **5. Velociraptor**
-- **Purpose:** End point monitoring, digital forensic, and cyber response platform.
-- **URL:** `http://<your-server-ip>:8889`
-- **Default Credentials:**
-  - Username: `admin`
-  - Password: `socarium`
-
-### **6. OpenCTI**
-- **Purpose:** Cyber threat intelligence analysis.
-- **URL:** `http://<your-server-ip>:8082`
-- **Default Credentials:**
-  - Username: `admin@opencti.io`
-  - Password: `admin`
-
----
-
 ## Proof of Concept (PoC)
 
 The `poc/` folder contains scripts and descriptions for attack simulations:
