@@ -225,7 +225,7 @@ while true; do
 done
 }
 
-deploy_all_auto() {
+deploy_all_semiauto() {
 while true; do
     CHOICE=$(whiptail --title "Socarium SOC Packages Deployment Menu" --menu "Choose an option:" 20 78 12 \
         "1" "Deploy All Core services" \
