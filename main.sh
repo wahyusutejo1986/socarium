@@ -19,7 +19,7 @@ log() {
 # Functions for deploying services
 deploy_all() {
     log "Install prerequisites and depedencies of Socarium..."
-    sudo ./install_prerequisutes.sh
+    sudo ./install_prerequisites.sh
     log "Calling install_all.sh to deploy all core services..."
     sudo ./install_all.sh || { log "Failed to execute install_all.sh. Exiting."; exit 1; }
     log "All core services deployed successfully via install_all.sh."
