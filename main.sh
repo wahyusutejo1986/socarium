@@ -18,6 +18,8 @@ log() {
 
 # Functions for deploying services
 deploy_all() {
+    log "Install prerequisites and depedencies of Socarium..."
+    sudo ./install_prerequisutes.sh
     log "Calling install_all.sh to deploy all core services..."
     sudo ./install_all.sh || { log "Failed to execute install_all.sh. Exiting."; exit 1; }
     log "All core services deployed successfully via install_all.sh."
@@ -191,35 +193,66 @@ socarium_config() {
     done
 }
 
-# Dropdown Menu
+socarium_manual_config() {
 while true; do
     CHOICE=$(whiptail --title "Socarium SOC Packages Deployment Menu" --menu "Choose an option:" 20 78 12 \
         "0" "Install Prerequisites" \
-        "1" "Deploy All Core Services" \
-        "2" "Deploy Wazuh" \
-        "3" "Deploy DFIR IRIS" \
-        "4" "Deploy Shuffle" \
-        "5" "Deploy MISP" \
-        "6" "Deploy Velociraptor" \
-        "7" "Deploy Yara" \
-        "8" "Deploy OpenCTI" \
-        "9" "Deploy Grafana" \
-        "10" "Socarium Configurations" \
-        "11" "Exit" 3>&1 1>&2 2>&3)
+        "1" "Deploy Wazuh" \
+        "2" "Deploy DFIR IRIS" \
+        "3" "Deploy Shuffle" \
+        "4" "Deploy MISP" \
+        "5" "Deploy Velociraptor" \
+        "6" "Deploy Yara" \
+        "7" "Deploy OpenCTI" \
+        "8" "Deploy Grafana" \
+        "9" "Socarium Configurations" \
+        "10" "Exit" 3>&1 1>&2 2>&3)
 
     case $CHOICE in
         0) log "Installing prerequisites..."; sudo ./install_prerequisites.sh ;;
-        1) deploy_all ;;
-        2) deploy_wazuh ;;
-        3) deploy_iris ;;
-        4) deploy_shuffle ;;
-        5) deploy_misp ;;
-        6) deploy_velociraptor ;;
-        7) deploy_yara ;;
-        8) deploy_opencti ;;
-        9) deploy_grafana ;;
-        10) socarium_config ;;
-        11) log "Exiting menu."; exit 0 ;;
+        1) deploy_wazuh ;;
+        2) deploy_iris ;;
+        3) deploy_shuffle ;;
+        4) deploy_misp ;;
+        5) deploy_velociraptor ;;
+        6) deploy_yara ;;
+        7) deploy_opencti ;;
+        8) deploy_grafana ;;
+        9) socarium_config ;;
+        10) log "Exiting menu."; exit 0 ;;
         *) log "Invalid option. Please try again." ;;
     esac
 done
+}
+
+deploy_all_auto() {
+while true; do
+    CHOICE=$(whiptail --title "Socarium SOC Packages Deployment Menu" --menu "Choose an option:" 20 78 12 \
+        "1" "Deploy All Core services" \
+        "2" "Socarium Configurations" \
+        "3" "Exit" 3>&1 1>&2 2>&3)
+
+    case $CHOICE in
+        1) deploy_all ;;
+        2) socarium_config ;;
+        3) log "Exiting menu."; exit 0 ;;
+        *) log "Invalid option. Please try again." ;;
+    esac
+done
+}
+
+#First Menu
+while true; do
+    CHOICE=$(whiptail --title "Socarium SOC Packages Deployment Menu" --menu "Choose an option:" 20 78 12 \
+        "1" "I'm New to This" \
+        "2" "I Know What I'm Doing" \
+        "3" "Exit" 3>&1 1>&2 2>&3)
+
+    case $CHOICE in
+        1) deploy_all_semiauto ;;
+        2) socarium_manual_config ;;
+        3) log "Exiting menu."; exit 0 ;;
+        *) log "Invalid option. Please try again." ;;
+    esac
+done
+
