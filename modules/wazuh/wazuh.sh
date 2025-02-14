@@ -25,7 +25,7 @@ cd "$SOC_DIR"
 echo "Installing Wazuh..."
 if [ ! -d "wazuh-docker" ]; then
     echo "Cloning Wazuh Docker repository..."
-    git clone https://github.com/wazuh/wazuh-docker.git -b v4.9.2
+    git clone https://github.com/wazuh/wazuh-docker.git -b v4.10.1
     cd $SOC_DIR/wazuh-docker/single-node/
 
     sysctl -w vm.max_map_count=262144
