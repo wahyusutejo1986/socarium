@@ -97,6 +97,7 @@ deploy_velociraptor() {
     log "Velociraptor deployed"
     cd $BASE_DIR
     log "Setup API file Integration DFIR IRIS"
+    sleep 10  # Check system 10 seconds
     cd $BASE_DIR/modules/velociraptor/velociraptor
     sudo ./velociraptor --config server.config.yaml config api_client --name admin --role administrator api.config.yaml
     sudo cp api.config.yaml $BASE_DIR/iris-web/docker/api.config.yaml
